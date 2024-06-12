@@ -23,21 +23,21 @@ app.post("/api/notes", (req, res) => {
     fs.readFile("./db/db.json", "utf8", (err, data) => {
        if (err) {
            console.error(err);
-           return res.status(500).json({ error: 'Error reading notes data' })
+           return res.status(500).json({ error: 'Error reading notes data' });
        }
-       const notes = JSON.parse(data )
-       const newNote = req.body
-       newNote.id = notes.length + 1 
+       const notes = JSON.parse(data );
+       const newNote = req.body;
+       newNote.id = notes.length + 1;
        notes.push(newNote);
        fs.writeFile("./db/db.json", JSON.stringify(notes, null,"\t"), (err) => {
            if (err) {
                console.error(err);
-               return res.status(500).json({ error: 'Error writing new note' })
+               return res.status(500).json({ error: 'Error writing new note' });
            }
-           res.json(newNote)
-       })
-   })
-})
+           res.json(newNote);
+       });
+   });
+});
 
 app.delete("/api/notes/:id", (req, res) => {
     const noteId = parseInt(req.params.id);
@@ -47,16 +47,16 @@ app.delete("/api/notes/:id", (req, res) => {
             return res.status(500).json({ error: 'Error Deleting Note' });
         }
         let notes = JSON.parse(data);
-        notes = notes.filter(note => note.id !== noteId)
+        notes = notes.filter(note => note.id !== noteId);
         fs.writeFile("./db/db.json", JSON.stringify(notes), (err) => {
             if (err) {
-                console.error(err)
-                return res.status(500).json({ error: 'Internal Server Error' })
+                console.error(err);
+                return res.status(500).json({ error: 'Internal Server Error' });
             }
-            res.status(204).send()
-        })
-    })
-})
+            res.status(204).send();
+        });
+    });
+});
 app.get("/notes",(req,res)=>{
     res.sendFile(path.join(__dirname,"./public/notes.html"))
 })
